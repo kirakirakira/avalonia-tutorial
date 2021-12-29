@@ -17,7 +17,7 @@ namespace Todo.ViewModels
 
         public ViewModelBase Content
         {
-            get => Content;
+            get => content;
             private set => this.RaiseAndSetIfChanged(ref content, value);
         }
 
