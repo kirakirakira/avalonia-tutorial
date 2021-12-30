@@ -4,6 +4,7 @@ using System.Text;
 using Todo.Models;
 using Todo.Services;
 using ReactiveUI;
+using System.Reactive.Linq;
 
 namespace Todo.ViewModels
 {
@@ -25,7 +26,23 @@ namespace Todo.ViewModels
 
         public void AddItem()
         {
-            Content = new AddItemViewModel();
+            var vm = new AddItemViewModel();
+
+            Observable.Merge(
+                vm.Ok,
+                vm.Cancel.Select(_ => (TodoItem)null))
+                .Take(1)
+                .Subscribe(model =>
+                {
+                    if (model != null)
+                    {
+                        List.Items.Add(model);
+                    }
+
+                    Content = List;
+                });
+
+            Content = vm;
         }
     }
 }
